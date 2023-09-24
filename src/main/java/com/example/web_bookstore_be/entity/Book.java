@@ -1,0 +1,48 @@
+package com.example.web_bookstore_be.entity;
+
+import jakarta.persistence.*;
+import lombok.Data;
+
+import java.util.List;
+
+@Data
+@Entity
+@Table(name = "book")
+public class Book {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_book")
+    private int idBook; // Mã sách
+    @Column(name = "name_book")
+    private String nameBook; // Tên sách
+    @Column(name = "author")
+    private String author; // Tên tác giả
+    @Column(name = "isbn")
+    private String ISBN; // Mã ISBN
+    @Column(name = "description")
+    private String description; // Mô tả
+    @Column(name = "list_price")
+    private double listPrice; // Giá niêm yết
+    @Column(name = "sell_price")
+    private double sellPrice; // Giá bán
+    @Column(name = "quantity")
+    private int quantity; // Số lượng
+    @Column(name = "avg_rating")
+    private double avgRating; // Trung bình xếp hạng
+
+    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @JoinTable(name = "book_genre", joinColumns = @JoinColumn(name = "id_book"), inverseJoinColumns = @JoinColumn(name = "id_genre"))
+    private List<Genre> listGenres; // Danh sách thể loại
+
+    @OneToMany(mappedBy = "book",fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<Image> listImages; // Danh sách ảnh
+
+    @OneToMany(mappedBy = "book",fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<Review> listReviews; // Danh sách đánh giá
+
+    @OneToMany(mappedBy = "book",fetch = FetchType.LAZY, cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    private List<OrderDetail> listOrderDetails; // Danh sách chi tiết đơn hàng
+
+    @OneToMany(mappedBy = "book",fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<FavoriteBook> listFavoriteBooks; // Danh sách sách yêu thích
+}
