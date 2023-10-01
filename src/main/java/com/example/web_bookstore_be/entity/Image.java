@@ -17,7 +17,7 @@ public class Image {
     private boolean isThumbnail; // Có phải là thumbnail không
     @Column(name = "url_image")
     private String urlImage; // Link hình ảnh
-    @Column(name = "data_image")
+    @Column(name = "data_image", columnDefinition = "LONGTEXT")
     @Lob
     private String dataImage; // Dữ liệu ảnh
 
