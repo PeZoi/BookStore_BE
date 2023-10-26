@@ -2,7 +2,8 @@ package com.example.web_bookstore_be.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
-import org.hibernate.annotations.Cascade;
+
+import java.sql.Timestamp;
 
 @Data
 @Entity
@@ -16,6 +17,8 @@ public class Review {
     private String content; // Nội dung đánh giá
     @Column(name = "rating_point")
     private float ratingPoint; // Điểm xếp hạng
+    @Column(name = "timestamp")
+    private Timestamp timestamp; // Thời gian mà comment
 
     @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinColumn(name = "id_book", nullable = false)

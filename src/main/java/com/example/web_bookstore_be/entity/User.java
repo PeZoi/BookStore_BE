@@ -34,6 +34,8 @@ public class User {
     private String purchaseAddress; // Địa chỉ mua hàng
     @Column(name = "delivery_address")
     private String deliveryAddress; // Địa chỉ giao hàng
+    @Column(name = "avatar")
+    private String avatar; // Ảnh đại diện
 
     @OneToMany(mappedBy = "user",fetch = FetchType.LAZY, cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     private List<Review> listReviews; // Danh sách đánh giá của user
@@ -41,7 +43,7 @@ public class User {
     @OneToMany(mappedBy = "user",fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<FavoriteBook> listFavoriteBooks; // Danh sách nhưng quyển sách yêu thích của user
 
-    @ManyToMany(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @ManyToMany(fetch = FetchType.EAGER,cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "id_user"), inverseJoinColumns = @JoinColumn(name = "id_role"))
     private List<Role> listRoles; // Danh sách role của user
 

@@ -19,7 +19,7 @@ public class Book {
     private String author; // Tên tác giả
     @Column(name = "isbn")
     private String ISBN; // Mã ISBN
-    @Column(name = "description")
+    @Column(name = "description", columnDefinition = "LONGTEXT")
     private String description; // Mô tả
     @Column(name = "list_price")
     private double listPrice; // Giá niêm yết
@@ -29,6 +29,10 @@ public class Book {
     private int quantity; // Số lượng
     @Column(name = "avg_rating")
     private double avgRating; // Trung bình xếp hạng
+    @Column(name = "sold_quantity")
+    private int soldQuantity; // Đã bán bao nhiêu
+    @Column(name = "discount_percent")
+    private int discountPercent; // Giảm giá bao nhiêu %
 
     @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinTable(name = "book_genre", joinColumns = @JoinColumn(name = "id_book"), inverseJoinColumns = @JoinColumn(name = "id_genre"))
