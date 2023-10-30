@@ -10,6 +10,7 @@ public class Endpoints {
             "/reviews/**",
             "/users/search/existsByUsername/**",
             "/users/search/existsByEmail/**",
+            "/user/active-account/**",
     };
 
     public static final String[] PUBLIC_POST = {

@@ -36,6 +36,10 @@ public class User {
     private String deliveryAddress; // Địa chỉ giao hàng
     @Column(name = "avatar")
     private String avatar; // Ảnh đại diện
+    @Column(name = "enabled")
+    private boolean enabled; // Trạng thái kích hoạt
+    @Column(name = "activation_code")
+    private String activationCode; // Mã kích hoạt
 
     @OneToMany(mappedBy = "user",fetch = FetchType.LAZY, cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     private List<Review> listReviews; // Danh sách đánh giá của user

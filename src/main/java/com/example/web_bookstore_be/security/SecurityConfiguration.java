@@ -21,7 +21,7 @@ public class SecurityConfiguration {
         return new BCryptPasswordEncoder();
     }
 
-    // Này để cấu hình xem security sẽ làm những gì
+    // Khi đăng nhâp thì sẽ vào hàm này đâu tiên để kiểm tra
     @Bean
     public DaoAuthenticationProvider authenticationProvider (UserSecurityService userSecurityService) {
         DaoAuthenticationProvider dap = new DaoAuthenticationProvider();
