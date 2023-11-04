@@ -53,4 +53,7 @@ public class User {
 
     @OneToMany(mappedBy = "user",fetch = FetchType.LAZY, cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     private List<Order> listOrders; // Danh sách đơn hàng của user
+
+    @OneToMany(mappedBy = "user",fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<CartItem> listCartItems;
 }

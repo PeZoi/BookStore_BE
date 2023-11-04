@@ -50,18 +50,6 @@ public class Book {
     @OneToMany(mappedBy = "book",fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<FavoriteBook> listFavoriteBooks; // Danh sách sách yêu thích
 
-    @Override
-    public String toString() {
-        return "Book{" +
-                "idBook=" + idBook +
-                ", nameBook='" + nameBook + '\'' +
-                ", author='" + author + '\'' +
-                ", ISBN='" + ISBN + '\'' +
-                ", description='" + description + '\'' +
-                ", listPrice=" + listPrice +
-                ", sellPrice=" + sellPrice +
-                ", quantity=" + quantity +
-                ", avgRating=" + avgRating +
-                '}';
-    }
+    @OneToMany(mappedBy = "book",fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<CartItem> listCartItems;
 }

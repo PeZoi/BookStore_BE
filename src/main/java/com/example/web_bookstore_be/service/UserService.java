@@ -1,7 +1,9 @@
 package com.example.web_bookstore_be.service;
 
+import com.example.web_bookstore_be.dao.RoleRepository;
 import com.example.web_bookstore_be.dao.UserRepository;
 import com.example.web_bookstore_be.entity.Notification;
+import com.example.web_bookstore_be.entity.Role;
 import com.example.web_bookstore_be.entity.User;
 import jakarta.mail.MessagingException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,12 +11,16 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Service
 public class UserService {
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private RoleRepository roleRepository;
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;
     @Autowired
@@ -38,6 +44,11 @@ public class UserService {
         user.setActivationCode(generateActivationCode());
         user.setEnabled(false);
 
+        // Cho role mặc định
+        List<Role> roleList = new ArrayList<>();
+        roleList.add(roleRepository.findByNameRole("USER"));
+        user.setListRoles(roleList);
+
         // Lưu vào database
         userRepository.save(user);
 
@@ -51,12 +62,16 @@ public class UserService {
         return UUID.randomUUID().toString();
     }
 
-    private void sendEmailActivation(String email, String activationCode) throws MessagingException {
+    private void sendEmailActivation(String email, String activationCode) {
         String url = "http://localhost:3000/active/" + email + "/" + activationCode;
         String subject = "Kích hoạt tài khoản";
         String message = "Cảm ơn bạn đã là thành viên của chúng tôi. Vui lòng kích hoạt tài khoản!: <br/> Mã kích hoạt: <strong>"+ activationCode +"<strong/>";
         message += "<br/> Click vào đây để <a href="+ url +">kích hoạt</a>";
-        emailService.sendMessage("dongph.0502@gmail.com", email, subject, message);
+        try {
+            emailService.sendMessage("dongph.0502@gmail.com", email, subject, message);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public ResponseEntity<?> activeAccount(String email, String activationCode) {
