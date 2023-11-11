@@ -1,4 +1,4 @@
-package com.example.web_bookstore_be.service;
+package com.example.web_bookstore_be.service.email;
 
 import jakarta.mail.internet.MimeMessage;
 import org.springframework.beans.factory.annotation.Autowired;

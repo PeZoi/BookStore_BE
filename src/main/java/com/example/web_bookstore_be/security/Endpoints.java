@@ -23,5 +23,9 @@ public class Endpoints {
             "/users",
             "/users/**",
             "/cart-items/**",
+            "/books",
+            "/books/**",
+            "/book/add-book/**",
+            "/**",
     };
 }

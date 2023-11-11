@@ -1,11 +1,11 @@
-package com.example.web_bookstore_be.service;
+package com.example.web_bookstore_be.service.user;
 
 import com.example.web_bookstore_be.dao.RoleRepository;
 import com.example.web_bookstore_be.dao.UserRepository;
 import com.example.web_bookstore_be.entity.Notification;
 import com.example.web_bookstore_be.entity.Role;
 import com.example.web_bookstore_be.entity.User;
-import jakarta.mail.MessagingException;
+import com.example.web_bookstore_be.service.email.EmailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.UUID;
 
 @Service
-public class UserService {
+public class UserServiceImp implements UserService {
     @Autowired
     private UserRepository userRepository;
     @Autowired
@@ -25,7 +25,7 @@ public class UserService {
     private BCryptPasswordEncoder passwordEncoder;
     @Autowired
     private EmailService emailService;
-    public ResponseEntity<?> register(User user) throws MessagingException {
+    public ResponseEntity<?> register(User user) {
         // Kiểm tra username đã tồn tại chưa
         if (userRepository.existsByUsername(user.getUsername())) {
             return ResponseEntity.badRequest().body(new Notification("Username đã tồn tại."));

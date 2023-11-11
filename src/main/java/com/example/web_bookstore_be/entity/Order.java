@@ -28,6 +28,8 @@ public class Order {
     private double feePayment; // Chi phí thanh toán
     @Column(name = "total_price")
     private double totalPrice; // Tổng tiền
+    @Column(name = "status")
+    private String status; // Trạng thái của đơn hàng
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
     private List<OrderDetail> listOrderDetails; // Danh sách chi tiết đơn hàng

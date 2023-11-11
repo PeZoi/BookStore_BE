@@ -4,8 +4,7 @@ import com.example.web_bookstore_be.entity.User;
 import com.example.web_bookstore_be.security.JwtResponse;
 import com.example.web_bookstore_be.security.LoginRequest;
 import com.example.web_bookstore_be.service.JWT.JwtService;
-import com.example.web_bookstore_be.service.UserSecurityService;
-import com.example.web_bookstore_be.service.UserService;
+import com.example.web_bookstore_be.service.user.UserServiceImp;
 import jakarta.mail.MessagingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -21,10 +20,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/user")
 public class UserController {
     @Autowired
-    private UserService userService;
-
-    @Autowired
-    private UserSecurityService userSecurityService;
+    private UserServiceImp userServiceImp;
     @Autowired
     private JwtService jwtService;
     @Autowired
@@ -32,23 +28,25 @@ public class UserController {
 
     @PostMapping("/register")
     public ResponseEntity<?> register(@Validated @RequestBody User user) throws MessagingException {
-        return userService.register(user);
+        return userServiceImp.register(user);
     }
 
     @GetMapping("/active-account")
     public ResponseEntity<?> activeAccount(@RequestParam String email, @RequestParam String activationCode) {
-        return userService.activeAccount(email, activationCode);
+        return userServiceImp.activeAccount(email, activationCode);
     }
 
     @PostMapping("/authenticate")
     public ResponseEntity<?> authenticate (@RequestBody LoginRequest loginRequest) {
         // Xử lý xác thực người dùng
         try{
+            // authentication sẽ giúp ta lấy dữ liệu từ db để kiểm tra
             Authentication authentication = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword())
             );
             // Nếu xác thực thành công
             if (authentication.isAuthenticated()) {
+                // Tạo token cho người dùng
                 final String jwtToken = jwtService.generateToken(loginRequest.getUsername());
                 return ResponseEntity.ok(new JwtResponse(jwtToken));
             }

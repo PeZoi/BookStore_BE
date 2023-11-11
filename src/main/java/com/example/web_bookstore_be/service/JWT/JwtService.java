@@ -1,16 +1,21 @@
 package com.example.web_bookstore_be.service.JWT;
 
+import com.example.web_bookstore_be.entity.Role;
+import com.example.web_bookstore_be.entity.User;
+import com.example.web_bookstore_be.service.UserSecurityService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import java.security.Key;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 
@@ -18,10 +23,32 @@ import java.util.function.Function;
 public class JwtService {
     private static final String KEY_SECRET = "MTIzNDU2NDU5OThEMzIxM0F6eGMzNTE2NTQzMjEzMjE2NTQ5OHEzMTNhMnMxZDMyMnp4M2MyMQ==";
 
+    @Autowired
+    private UserSecurityService userSecurityService;
+
     // Tạo jwt dựa trên username (tạo thông tin cần trả về cho FE khi đăng nhập thành công)
     public String generateToken(String username) {
         Map<String, Object> claims = new HashMap<>();
-//        claims.put("isAdmin", true);
+        User user = userSecurityService.findByUsername(username);
+        claims.put("avatar", user.getAvatar() + "");
+        claims.put("lastName", user.getLastName());
+        if (user != null) {
+            List<Role> roles = user.getListRoles();
+            if (roles.size() > 0) {
+                for (Role role : roles) {
+                    if (role.getNameRole().equals("ADMIN")) {
+                        claims.put("role", "ADMIN");
+                        break;
+                    }
+                    if (role.getNameRole().equals("CUSTOMER")) {
+                        claims.put("role", "CUSTOMER");
+                        break;
+                    }
+                }
+            }
+        }
+
+
         return createToken(claims, username);
     }
 
@@ -31,7 +58,8 @@ public class JwtService {
                 .setClaims(claims)
                 .setSubject(username)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + 30 * 60 * 1000) ) // Hết hạn sau 30 phút
+//                .setExpiration(new Date(System.currentTimeMillis() + 30 * 60 * 1000) ) // Hết hạn sau 30 phút
+                .setExpiration(new Date(System.currentTimeMillis() + 100000L * 60 * 60 * 1000) )
                 .signWith(SignatureAlgorithm.HS256, getSigneKey())
                 .compact();
     }
