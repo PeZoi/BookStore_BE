@@ -85,4 +85,22 @@ public class Base64ToMultipartFileConverter {
             return null;
         }
     }
+
+    // Hàm kiểm tra chuỗi base64
+    public static boolean isBase64(String str) {
+        try {
+            // Loại bỏ tiền tố Data URI nếu có
+            if (str.startsWith("data:")) {
+                str = str.split(",")[1];
+            }
+
+            // Loại bỏ khoảng trắng
+            String cleanedBase64 = str.replaceAll("\\s", "");
+
+            byte[] decodedBytes = Base64.getDecoder().decode(cleanedBase64);
+            return true;
+        } catch (IllegalArgumentException e) {
+            return false;
+        }
+    }
 }
