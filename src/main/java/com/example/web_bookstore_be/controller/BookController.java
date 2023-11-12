@@ -15,12 +15,12 @@ public class BookController {
     @Autowired
     private BookService bookService;
 
-
-
     @PostMapping(path = "/add-book")
     public ResponseEntity<?> save(@RequestBody JsonNode jsonData) {
         try {
             return bookService.save(jsonData);
+//            System.out.println(jsonData);
+//            return ResponseEntity.ok("Ok");
         } catch (Exception e) {
             e.printStackTrace();
             System.out.println("Lỗi r");
