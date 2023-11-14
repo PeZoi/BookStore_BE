@@ -44,12 +44,6 @@ public class BookServiceImp implements BookService {
         try {
             Book book = objectMapper.treeToValue(bookJson, Book.class);
 
-            // Nếu có giảm giá
-            if (book.getDiscountPercent() != 0) {
-                int sellPrice = (int) ((int) book.getListPrice() - Math.round(book.getListPrice() / book.getDiscountPercent()));
-                book.setSellPrice(sellPrice);
-            }
-
             // Lưu thể loại của sách
             List<Integer> idGenreList = objectMapper.readValue(bookJson.get("idGenres").traverse(), new TypeReference<List<Integer>>() {
             });
@@ -111,12 +105,6 @@ public class BookServiceImp implements BookService {
         try {
             Book book = objectMapper.treeToValue(bookJson, Book.class);
             List<Image> imagesList = imageRepository.findImagesByBook(book);
-
-            // Nếu có giảm giá
-            if (book.getDiscountPercent() != 0) {
-                int sellPrice = (int) ((int) book.getListPrice() - Math.round(book.getListPrice() / book.getDiscountPercent()));
-                book.setSellPrice(sellPrice);
-            }
 
             // Lưu thể loại của sách
             List<Integer> idGenreList = objectMapper.readValue(bookJson.get("idGenres").traverse(), new TypeReference<List<Integer>>() {

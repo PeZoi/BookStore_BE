@@ -54,7 +54,8 @@ public class SecurityConfiguration {
         http.cors(cors -> {
             cors.configurationSource(request -> {
                 CorsConfiguration corsConfig = new CorsConfiguration();
-                corsConfig.addAllowedOrigin(Endpoints.font_end_host);
+//                corsConfig.addAllowedOrigin("https://29da-2001-ee0-1b0b-b8e2-498f-8d3-462c-8984.ngrok-free.app/");
+                corsConfig.addAllowedOrigin("*");
                 corsConfig.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE"));
                 corsConfig.addAllowedHeader("*");
                 return corsConfig;

@@ -5,6 +5,7 @@ import com.example.web_bookstore_be.security.JwtResponse;
 import com.example.web_bookstore_be.security.LoginRequest;
 import com.example.web_bookstore_be.service.JWT.JwtService;
 import com.example.web_bookstore_be.service.user.UserServiceImp;
+import com.fasterxml.jackson.databind.JsonNode;
 import jakarta.mail.MessagingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -54,5 +55,35 @@ public class UserController {
             return ResponseEntity.badRequest().body("Tên đăng nhập hoặc mật khẩu không đúng!");
         }
         return ResponseEntity.badRequest().body("Xác thực không thành công");
+    }
+
+    @PostMapping(path = "/add-user")
+    public ResponseEntity<?> save (@RequestBody JsonNode jsonData) {
+        try{
+            return userServiceImp.save(jsonData, "add");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.badRequest().build();
+        }
+    }
+
+    @PutMapping(path = "/update-user")
+    public ResponseEntity<?> update(@RequestBody JsonNode jsonData) {
+        try{
+            return userServiceImp.save(jsonData, "update");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.badRequest().build();
+        }
+    }
+
+    @DeleteMapping(path = "/delete-user/{idUser}")
+    public ResponseEntity<?> delete(@PathVariable int idUser) {
+        try{
+            return userServiceImp.delete(idUser);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.badRequest().build();
+        }
     }
 }
