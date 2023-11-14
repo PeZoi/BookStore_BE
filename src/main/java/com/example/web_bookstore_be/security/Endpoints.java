@@ -27,6 +27,7 @@ public class Endpoints {
             "/books/**",
             "/book/add-book/**",
             "/user/add-user/**",
+            "/feedbacks/**",
             "/**",
     };
 }
