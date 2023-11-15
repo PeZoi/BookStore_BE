@@ -12,11 +12,24 @@ public class Endpoints {
             "/users/search/existsByUsername/**",
             "/users/search/existsByEmail/**",
             "/user/active-account/**",
+            "/cart-items/**",
+            "/users/*/listCartItems",
+
     };
 
     public static final String[] PUBLIC_POST = {
             "/user/register",
             "/user/authenticate",
+            "/cart-item/add-item",
+    };
+
+    public static final String[] PUBLIC_PUT = {
+            "/cart-item/**",
+            "/cart-items/**",
+    };
+
+    public static final String[] PUBLIC_DELETE = {
+            "/cart-items/**",
     };
 
     public static final String[] ADMIN_ENDPOINT = {
@@ -28,6 +41,8 @@ public class Endpoints {
             "/book/add-book/**",
             "/user/add-user/**",
             "/feedbacks/**",
+            "/cart-items/**",
+            "/cart-item/**",
             "/**",
     };
 }

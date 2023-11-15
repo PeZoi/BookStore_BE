@@ -20,4 +20,13 @@ public class CartItem {
     @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinColumn(name = "id_user", nullable = false)
     private User user;
+
+    @Override
+    public String toString() {
+        return "CartItem{" +
+                "idCart=" + idCart +
+                ", quantity=" + quantity +
+                ", book=" + book.getIdBook() +
+                '}';
+    }
 }

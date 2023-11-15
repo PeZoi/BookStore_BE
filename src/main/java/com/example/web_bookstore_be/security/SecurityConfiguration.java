@@ -1,6 +1,6 @@
 package com.example.web_bookstore_be.security;
 
-import com.example.web_bookstore_be.filter.JwtFilter;
+import com.example.web_bookstore_be.service.JWT.JwtFilter;
 import com.example.web_bookstore_be.service.UserSecurityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -45,6 +45,8 @@ public class SecurityConfiguration {
                 config->config
                         .requestMatchers(HttpMethod.GET, Endpoints.PUBLIC_GET).permitAll()
                         .requestMatchers(HttpMethod.POST, Endpoints.PUBLIC_POST).permitAll()
+                        .requestMatchers(HttpMethod.PUT, Endpoints.PUBLIC_PUT).hasAuthority("CUSTOMER")
+                        .requestMatchers(HttpMethod.DELETE, Endpoints.PUBLIC_DELETE).hasAuthority("CUSTOMER")
                         .requestMatchers(HttpMethod.GET, Endpoints.ADMIN_ENDPOINT).hasAuthority("ADMIN")
                         .requestMatchers(HttpMethod.POST, Endpoints.ADMIN_ENDPOINT).hasAuthority("ADMIN")
                         .requestMatchers(HttpMethod.PUT, Endpoints.ADMIN_ENDPOINT).hasAuthority("ADMIN")
