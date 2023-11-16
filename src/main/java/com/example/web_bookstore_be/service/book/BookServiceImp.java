@@ -134,8 +134,7 @@ public class BookServiceImp implements BookService {
             Book newBook = bookRepository.save(book);
 
             // Kiểm tra ảnh có liên quan
-            List<String> arrDataRelatedImg = objectMapper.readValue(bookJson.get("relatedImg").traverse(), new TypeReference<List<String>>() {
-            });
+            List<String> arrDataRelatedImg = objectMapper.readValue(bookJson.get("relatedImg").traverse(), new TypeReference<List<String>>() {});
 
             // Xem có xoá tất ở bên FE không
             boolean isCheckDelete = true;

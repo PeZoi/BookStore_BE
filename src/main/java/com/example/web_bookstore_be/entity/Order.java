@@ -20,6 +20,10 @@ public class Order {
     private String purchaseAddress; // Địa chỉ mua hàng
     @Column(name = "delivery_address")
     private String deliveryAddress; // Địa chỉ giao hàng
+    @Column(name = "phone_number")
+    private String phoneNumber; // Số điện thoại (vì có thể tuỳ chỉnh)
+    @Column(name = "full_name")
+    private String fullName; // Họ và tên của khách hàng (tuỳ chỉnh)
     @Column(name = "total_price_product")
     private double totalPriceProduct; // Tổng tiền sản phẩm
     @Column(name = "fee_delivery")
@@ -30,6 +34,8 @@ public class Order {
     private double totalPrice; // Tổng tiền
     @Column(name = "status")
     private String status; // Trạng thái của đơn hàng
+    @Column(name = "note")
+    private String note; // Ghi chú
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
     private List<OrderDetail> listOrderDetails; // Danh sách chi tiết đơn hàng

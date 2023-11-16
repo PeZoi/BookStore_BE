@@ -14,10 +14,10 @@ public class CartItem {
     private int idCart;
     @Column (name = "quantity")
     private int quantity;
-    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @ManyToOne()
     @JoinColumn(name = "id_book", nullable = false)
     private Book book;
-    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @ManyToOne()
     @JoinColumn(name = "id_user", nullable = false)
     private User user;
 

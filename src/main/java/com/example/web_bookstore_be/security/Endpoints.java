@@ -14,13 +14,16 @@ public class Endpoints {
             "/user/active-account/**",
             "/cart-items/**",
             "/users/*/listCartItems",
-
+            "/orders/**",
+            "/order-detail/**",
+            "/users/*/listOrders",
     };
 
     public static final String[] PUBLIC_POST = {
             "/user/register",
             "/user/authenticate",
             "/cart-item/add-item",
+            "/order/**",
     };
 
     public static final String[] PUBLIC_PUT = {
@@ -43,6 +46,9 @@ public class Endpoints {
             "/feedbacks/**",
             "/cart-items/**",
             "/cart-item/**",
+            "/orders/**",
+            "/order/**",
+            "/order-detail/**",
             "/**",
     };
 }

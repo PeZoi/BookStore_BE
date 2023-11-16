@@ -16,7 +16,7 @@ public class OrderDetail {
     @Column(name = "price")
     private double price; // Giá của 1 quyển sách
 
-    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @ManyToOne(cascade = {CascadeType.REFRESH})
     @JoinColumn(name = "id_book", nullable = false)
     private Book book; // Sách
 
