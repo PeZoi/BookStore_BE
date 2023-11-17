@@ -10,6 +10,7 @@ import com.example.web_bookstore_be.service.email.EmailService;
 import com.example.web_bookstore_be.service.util.Base64ToMultipartFileConverter;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -52,6 +53,8 @@ public class UserServiceImp implements UserService {
         // Mã hoá mật khẩu
         String encodePassword = passwordEncoder.encode(user.getPassword());
         user.setPassword(encodePassword);
+
+        user.setAvatar("");
 
         // Tạo mã kích hoạt cho người dùng
         user.setActivationCode(generateActivationCode());
@@ -148,12 +151,81 @@ public class UserServiceImp implements UserService {
         return ResponseEntity.ok("thành công");
     }
 
+    @Override
+    public ResponseEntity<?> changePassword(JsonNode userJson) {
+        try{
+            int idUser = Integer.parseInt(formatStringByJson(String.valueOf(userJson.get("idUser"))));
+            String newPassword = formatStringByJson(String.valueOf(userJson.get("newPassword")));
+            Optional<User> user = userRepository.findById(idUser);
+            user.get().setPassword(passwordEncoder.encode(newPassword));
+            userRepository.save(user.get());
+        } catch (Exception e) {
+            e.printStackTrace();
+            ResponseEntity.badRequest().build();
+        }
+        return ResponseEntity.ok().build();
+    }
+
+    @Override
+    @Transactional
+    public ResponseEntity<?> changeAvatar(JsonNode userJson) {
+        try{
+            int idUser = Integer.parseInt(formatStringByJson(String.valueOf(userJson.get("idUser"))));
+            String dataAvatar = formatStringByJson(String.valueOf(userJson.get("avatar")));
+
+            Optional<User> user = userRepository.findById(idUser);
+
+            // Xoá đi ảnh trước đó trong cloudinary
+            if (user.get().getAvatar().length() > 0) {
+                uploadImageService.deleteImage(user.get().getAvatar());
+            }
+
+            if (Base64ToMultipartFileConverter.isBase64(dataAvatar)) {
+                MultipartFile avatarFile = Base64ToMultipartFileConverter.convert(dataAvatar);
+                String avatarUrl = uploadImageService.uploadImage(avatarFile, "User_" + idUser);
+                user.get().setAvatar(avatarUrl);
+            }
+
+            userRepository.save(user.get());
+        } catch (Exception e) {
+            e.printStackTrace();
+            ResponseEntity.badRequest().build();
+        }
+        return ResponseEntity.ok().build();
+    }
+
+    @Override
+    public ResponseEntity<?> updateProfile(JsonNode userJson) {
+        try{
+            User userRequest = objectMapper.treeToValue(userJson, User.class);
+            Optional<User> user = userRepository.findById(userRequest.getIdUser());
+
+            user.get().setFirstName(userRequest.getFirstName());
+            user.get().setLastName(userRequest.getLastName());
+            // Format lại ngày sinh
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSX");
+            Instant instant = Instant.from(formatter.parse(formatStringByJson(String.valueOf(userJson.get("dateOfBirth")))));
+            java.sql.Date dateOfBirth = new java.sql.Date(Date.from(instant).getTime());
+
+            user.get().setDateOfBirth(dateOfBirth);
+            user.get().setPhoneNumber(userRequest.getPhoneNumber());
+            user.get().setDeliveryAddress(userRequest.getDeliveryAddress());
+            user.get().setGender(userRequest.getGender());
+
+            userRepository.save(user.get());
+        } catch (Exception e) {
+            e.printStackTrace();
+            ResponseEntity.badRequest().build();
+        }
+        return ResponseEntity.ok().build();
+    }
+
     private String generateActivationCode() {
         return UUID.randomUUID().toString();
     }
 
     private void sendEmailActivation(String email, String activationCode) {
-//        String endpointFE = "https://29da-2001-ee0-1b0b-b8e2-498f-8d3-462c-8984.ngrok-free.app";
+//        String endpointFE = "https://36f1-2402-800-63ad-8f52-a8c3-25cb-809c-62f3.ngrok-free.app";
         String endpointFE = "http//localhost:3000";
         String url = endpointFE + "/active/" + email + "/" + activationCode;
         String subject = "Kích hoạt tài khoản";

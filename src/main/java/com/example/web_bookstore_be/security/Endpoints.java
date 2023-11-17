@@ -12,6 +12,8 @@ public class Endpoints {
             "/users/search/existsByUsername/**",
             "/users/search/existsByEmail/**",
             "/user/active-account/**",
+            "/user/change-password/**",
+            "/user/change-avatar/**",
             "/cart-items/**",
             "/users/*/listCartItems",
             "/orders/**",
@@ -29,6 +31,7 @@ public class Endpoints {
     public static final String[] PUBLIC_PUT = {
             "/cart-item/**",
             "/cart-items/**",
+            "/users/**",
     };
 
     public static final String[] PUBLIC_DELETE = {

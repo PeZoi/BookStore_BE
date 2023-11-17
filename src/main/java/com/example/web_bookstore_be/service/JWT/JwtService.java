@@ -31,20 +31,19 @@ public class JwtService {
         Map<String, Object> claims = new HashMap<>();
         User user = userSecurityService.findByUsername(username);
         claims.put("id", user.getIdUser());
-        claims.put("avatar", user.getAvatar() + "");
+        claims.put("avatar", user.getAvatar());
         claims.put("lastName", user.getLastName());
-        if (user != null) {
-            List<Role> roles = user.getListRoles();
-            if (roles.size() > 0) {
-                for (Role role : roles) {
-                    if (role.getNameRole().equals("ADMIN")) {
-                        claims.put("role", "ADMIN");
-                        break;
-                    }
-                    if (role.getNameRole().equals("CUSTOMER")) {
-                        claims.put("role", "CUSTOMER");
-                        break;
-                    }
+        claims.put("enabled", user.isEnabled());
+        List<Role> roles = user.getListRoles();
+        if (roles.size() > 0) {
+            for (Role role : roles) {
+                if (role.getNameRole().equals("ADMIN")) {
+                    claims.put("role", "ADMIN");
+                    break;
+                }
+                if (role.getNameRole().equals("CUSTOMER")) {
+                    claims.put("role", "CUSTOMER");
+                    break;
                 }
             }
         }

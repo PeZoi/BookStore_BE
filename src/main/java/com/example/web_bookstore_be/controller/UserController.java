@@ -57,6 +57,36 @@ public class UserController {
         return ResponseEntity.badRequest().body("Xác thực không thành công");
     }
 
+    @PutMapping("/change-password")
+    public ResponseEntity<?> changePassword(@RequestBody JsonNode jsonData) {
+        try{
+            return userServiceImp.changePassword(jsonData);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.badRequest().build();
+        }
+    }
+
+    @PutMapping("/change-avatar")
+    public ResponseEntity<?> changeAvatar(@RequestBody JsonNode jsonData) {
+        try{
+            return userServiceImp.changeAvatar(jsonData);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.badRequest().build();
+        }
+    }
+
+    @PutMapping("/update-profile")
+    public ResponseEntity<?> updateProfile(@RequestBody JsonNode jsonData) {
+        try{
+            return userServiceImp.updateProfile(jsonData);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.badRequest().build();
+        }
+    }
+
     @PostMapping(path = "/add-user")
     public ResponseEntity<?> save (@RequestBody JsonNode jsonData) {
         try{

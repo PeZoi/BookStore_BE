@@ -1,9 +1,6 @@
 package com.example.web_bookstore_be.service.order;
 
-import com.example.web_bookstore_be.dao.CartItemRepository;
-import com.example.web_bookstore_be.dao.OrderDetailRepository;
-import com.example.web_bookstore_be.dao.OrderRepository;
-import com.example.web_bookstore_be.dao.UserRepository;
+import com.example.web_bookstore_be.dao.*;
 import com.example.web_bookstore_be.entity.Book;
 import com.example.web_bookstore_be.entity.Order;
 import com.example.web_bookstore_be.entity.OrderDetail;
@@ -17,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import java.sql.Date;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -30,6 +28,8 @@ public class OrderServiceImp implements OrderService{
     private UserRepository userRepository;
     @Autowired
     private CartItemRepository cartItemRepository;
+    @Autowired
+    private BookRepository bookRepository;
     public OrderServiceImp(ObjectMapper objectMapper) {
         this.objectMapper = objectMapper;
     }
@@ -53,12 +53,18 @@ public class OrderServiceImp implements OrderService{
             JsonNode jsonNode = jsonData.get("book");
             for (JsonNode node : jsonNode) {
                 int quantity = Integer.parseInt(formatStringByJson(String.valueOf(node.get("quantity"))));
-                Book book = objectMapper.treeToValue(node.get("book"), Book.class);
+                Book bookResponse = objectMapper.treeToValue(node.get("book"), Book.class);
+                Optional<Book> book = bookRepository.findById(bookResponse.getIdBook());
+                book.get().setQuantity(book.get().getQuantity() - quantity);
+                book.get().setSoldQuantity(quantity);
+
                 OrderDetail orderDetail = new OrderDetail();
-                orderDetail.setBook(book);
+                orderDetail.setBook(book.get());
                 orderDetail.setQuantity(quantity);
                 orderDetail.setOrder(newOrder);
+                orderDetail.setPrice(quantity * book.get().getSellPrice());
                 orderDetailRepository.save(orderDetail);
+                bookRepository.save(book.get());
             }
 
             cartItemRepository.deleteCartItemsByIdUser(user.get().getIdUser());
@@ -78,6 +84,18 @@ public class OrderServiceImp implements OrderService{
             String status = formatStringByJson(String.valueOf(jsonData.get("status")));
             Optional<Order> order = orderRepository.findById(idOrder);
             order.get().setStatus(status);
+
+            // Lấy ra order detail
+            if (status.equals("Bị huỷ")) {
+                List<OrderDetail> orderDetailList = orderDetailRepository.findOrderDetailsByOrder(order.get());
+                for (OrderDetail orderDetail : orderDetailList) {
+                    Book bookOrderDetail = orderDetail.getBook();
+                    bookOrderDetail.setSoldQuantity(bookOrderDetail.getSoldQuantity() - orderDetail.getQuantity());
+                    bookOrderDetail.setQuantity(bookOrderDetail.getQuantity() + orderDetail.getQuantity());
+                    bookRepository.save(bookOrderDetail);
+                }
+            }
+
             orderRepository.save(order.get());
         } catch (Exception e) {
             e.printStackTrace();

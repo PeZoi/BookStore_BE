@@ -8,4 +8,7 @@ public interface UserService {
     public ResponseEntity<?> register(User user);
     public ResponseEntity<?> save(JsonNode userJson, String option);
     public ResponseEntity<?> delete(int id);
+    public ResponseEntity<?> changePassword(JsonNode userJson);
+    public ResponseEntity<?> changeAvatar(JsonNode userJson);
+    public ResponseEntity<?> updateProfile(JsonNode userJson);
 }

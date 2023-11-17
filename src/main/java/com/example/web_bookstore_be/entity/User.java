@@ -59,4 +59,24 @@ public class User {
 
     @OneToMany(mappedBy = "user",fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Feedbacks> listFeedbacks;
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "idUser=" + idUser +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", gender=" + gender +
+                ", dateOfBirth=" + dateOfBirth +
+                ", email='" + email + '\'' +
+                ", phoneNumber='" + phoneNumber + '\'' +
+                ", purchaseAddress='" + purchaseAddress + '\'' +
+                ", deliveryAddress='" + deliveryAddress + '\'' +
+                ", avatar='" + avatar + '\'' +
+                ", enabled=" + enabled +
+                ", activationCode='" + activationCode + '\'' +
+                '}';
+    }
 }
