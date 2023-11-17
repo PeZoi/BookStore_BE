@@ -5,6 +5,8 @@ import com.example.web_bookstore_be.dao.UserRepository;
 import com.example.web_bookstore_be.entity.Notification;
 import com.example.web_bookstore_be.entity.Role;
 import com.example.web_bookstore_be.entity.User;
+import com.example.web_bookstore_be.security.JwtResponse;
+import com.example.web_bookstore_be.service.JWT.JwtService;
 import com.example.web_bookstore_be.service.UploadImage.UploadImageService;
 import com.example.web_bookstore_be.service.email.EmailService;
 import com.example.web_bookstore_be.service.util.Base64ToMultipartFileConverter;
@@ -33,6 +35,8 @@ public class UserServiceImp implements UserService {
     private EmailService emailService;
     @Autowired
     private UploadImageService uploadImageService;
+    @Autowired
+    private JwtService jwtService;
     private final ObjectMapper objectMapper;
 
     public UserServiceImp(ObjectMapper objectMapper) {
@@ -186,7 +190,10 @@ public class UserServiceImp implements UserService {
                 user.get().setAvatar(avatarUrl);
             }
 
-            userRepository.save(user.get());
+            User newUser =  userRepository.save(user.get());
+            final String jwtToken = jwtService.generateToken(newUser.getUsername());
+            return ResponseEntity.ok(new JwtResponse(jwtToken));
+
         } catch (Exception e) {
             e.printStackTrace();
             ResponseEntity.badRequest().build();
