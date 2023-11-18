@@ -107,6 +107,7 @@
                 </configuration>
             </plugin>
         </plugins>
+        <finalName>book-store-be</finalName>
     </build>
 
 </project>
