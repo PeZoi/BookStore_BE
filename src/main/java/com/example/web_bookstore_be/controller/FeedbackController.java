@@ -44,7 +44,6 @@ public class FeedbackController {
     public ResponseEntity<?> add(@RequestBody JsonNode jsonData) {
         try {
             User user = userRepository.findByUsername(formatStringByJson(String.valueOf(jsonData.get("user"))));
-            System.out.println(user.getUsername());
 
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSX");
             Instant instant = Instant.from(formatter.parse(formatStringByJson(String.valueOf(jsonData.get("dateCreated")))));

@@ -15,6 +15,8 @@ public class OrderDetail {
     private int quantity; // Số lượng
     @Column(name = "price")
     private double price; // Giá của 1 quyển sách
+    @Column(name = "is_review")
+    private boolean isReview; // đã đánh giá chưa
 
     @ManyToOne(cascade = {CascadeType.REFRESH})
     @JoinColumn(name = "id_book", nullable = false)

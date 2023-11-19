@@ -19,6 +19,8 @@ public class Endpoints {
             "/orders/**",
             "/order-detail/**",
             "/users/*/listOrders",
+            "/users/*/listRoles",
+            "/users/*",
     };
 
     public static final String[] PUBLIC_POST = {
@@ -26,12 +28,14 @@ public class Endpoints {
             "/user/authenticate",
             "/cart-item/add-item",
             "/order/**",
+            "/review/**",
     };
 
     public static final String[] PUBLIC_PUT = {
             "/cart-item/**",
             "/cart-items/**",
             "/users/**",
+            "/user/update-profile",
     };
 
     public static final String[] PUBLIC_DELETE = {
@@ -52,6 +56,8 @@ public class Endpoints {
             "/orders/**",
             "/order/**",
             "/order-detail/**",
+            "/roles/**",
             "/**",
+
     };
 }

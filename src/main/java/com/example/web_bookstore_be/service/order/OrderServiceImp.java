@@ -63,6 +63,7 @@ public class OrderServiceImp implements OrderService{
                 orderDetail.setQuantity(quantity);
                 orderDetail.setOrder(newOrder);
                 orderDetail.setPrice(quantity * book.get().getSellPrice());
+                orderDetail.setReview(false);
                 orderDetailRepository.save(orderDetail);
                 bookRepository.save(book.get());
             }

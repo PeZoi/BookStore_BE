@@ -62,7 +62,7 @@ public class BookServiceImp implements BookService {
 
             Image thumbnail = new Image();
             thumbnail.setBook(newBook);
-            thumbnail.setDataImage(dataThumbnail);
+//            thumbnail.setDataImage(dataThumbnail);
             thumbnail.setThumbnail(true);
             MultipartFile multipartFile = Base64ToMultipartFileConverter.convert(dataThumbnail);
             String thumbnailUrl = uploadImageService.uploadImage(multipartFile, "Book_" + newBook.getIdBook());
@@ -81,7 +81,7 @@ public class BookServiceImp implements BookService {
                 String img = arrDataRelatedImg.get(i);
                 Image image = new Image();
                 image.setBook(newBook);
-                image.setDataImage(img);
+//                image.setDataImage(img);
                 image.setThumbnail(false);
                 MultipartFile relatedImgFile = Base64ToMultipartFileConverter.convert(img);
                 String imgURL = uploadImageService.uploadImage(relatedImgFile, "Book_" + newBook.getIdBook() + "." + i);
@@ -121,7 +121,7 @@ public class BookServiceImp implements BookService {
             if (Base64ToMultipartFileConverter.isBase64(dataThumbnail)) {
                 for (Image image : imagesList) {
                     if (image.isThumbnail()) {
-                        image.setDataImage(dataThumbnail);
+//                        image.setDataImage(dataThumbnail);
                         MultipartFile multipartFile = Base64ToMultipartFileConverter.convert(dataThumbnail);
                         String thumbnailUrl = uploadImageService.uploadImage(multipartFile, "Book_" + book.getIdBook());
                         image.setUrlImage(thumbnailUrl);
@@ -155,7 +155,7 @@ public class BookServiceImp implements BookService {
                     String img = arrDataRelatedImg.get(i);
                     Image image = new Image();
                     image.setBook(newBook);
-                    image.setDataImage(img);
+//                    image.setDataImage(img);
                     image.setThumbnail(false);
                     MultipartFile relatedImgFile = Base64ToMultipartFileConverter.convert(img);
                     String imgURL = uploadImageService.uploadImage(relatedImgFile, "Book_" + newBook.getIdBook() + "." + i);
@@ -169,7 +169,7 @@ public class BookServiceImp implements BookService {
                     if (Base64ToMultipartFileConverter.isBase64(img)) {
                         Image image = new Image();
                         image.setBook(newBook);
-                        image.setDataImage(img);
+//                        image.setDataImage(img);
                         image.setThumbnail(false);
                         MultipartFile relatedImgFile = Base64ToMultipartFileConverter.convert(img);
                         String imgURL = uploadImageService.uploadImage(relatedImgFile, "Book_" + newBook.getIdBook() + "." + i);
