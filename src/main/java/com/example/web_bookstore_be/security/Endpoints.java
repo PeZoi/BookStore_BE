@@ -12,8 +12,6 @@ public class Endpoints {
             "/users/search/existsByUsername/**",
             "/users/search/existsByEmail/**",
             "/user/active-account/**",
-            "/user/change-password/**",
-            "/user/change-avatar/**",
             "/cart-items/**",
             "/users/*/listCartItems",
             "/orders/**",
@@ -36,6 +34,9 @@ public class Endpoints {
             "/cart-items/**",
             "/users/**",
             "/user/update-profile",
+            "/user/change-password",
+            "/user/forgot-password",
+            "/user/change-avatar",
     };
 
     public static final String[] PUBLIC_DELETE = {

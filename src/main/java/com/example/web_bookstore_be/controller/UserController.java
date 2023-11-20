@@ -57,8 +57,19 @@ public class UserController {
         return ResponseEntity.badRequest().body("Xác thực không thành công");
     }
 
+    @PutMapping(path = "/forgot-password")
+    public ResponseEntity<?> forgotPassword(@RequestBody JsonNode jsonNode) {
+        try{
+            return userServiceImp.forgotPassword(jsonNode);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.badRequest().build();
+        }
+    }
+
     @PutMapping("/change-password")
     public ResponseEntity<?> changePassword(@RequestBody JsonNode jsonData) {
+        System.out.println(jsonData);
         try{
             return userServiceImp.changePassword(jsonData);
         } catch (Exception e) {

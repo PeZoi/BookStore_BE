@@ -13,6 +13,7 @@ import com.example.web_bookstore_be.service.util.Base64ToMultipartFileConverter;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.transaction.Transactional;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -160,6 +161,8 @@ public class UserServiceImp implements UserService {
         try{
             int idUser = Integer.parseInt(formatStringByJson(String.valueOf(userJson.get("idUser"))));
             String newPassword = formatStringByJson(String.valueOf(userJson.get("newPassword")));
+            System.out.println(idUser);
+            System.out.println(newPassword);
             Optional<User> user = userRepository.findById(idUser);
             user.get().setPassword(passwordEncoder.encode(newPassword));
             userRepository.save(user.get());
@@ -227,6 +230,30 @@ public class UserServiceImp implements UserService {
         return ResponseEntity.ok().build();
     }
 
+    @Override
+    public ResponseEntity<?> forgotPassword(JsonNode jsonNode) {
+        try{
+            User user = userRepository.findByEmail(formatStringByJson(jsonNode.get("email").toString()));
+
+            if (user == null) {
+                return ResponseEntity.notFound().build();
+            }
+
+            // Đổi mật khẩu cho user
+            String passwordTemp = generateTemporaryPassword();
+            user.setPassword(passwordEncoder.encode(passwordTemp));
+            userRepository.save(user);
+
+            // Gửi email đê nhận mật khẩu
+            sendEmailForgotPassword(user.getEmail(), passwordTemp);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.badRequest().build();
+        }
+        return ResponseEntity.ok().build();
+    }
+
     private String generateActivationCode() {
         return UUID.randomUUID().toString();
     }
@@ -243,6 +270,21 @@ public class UserServiceImp implements UserService {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+    }
+
+    private void sendEmailForgotPassword(String email, String password) {
+        String subject = "Reset mật khẩu";
+        String message = "Mật khẩu tạm thời của bạn là: <strong>" + password + "</strong>";
+        message += "<br/> <span>Vui lòng đăng nhập và đổi lại mật khẩu của bạn</span>";
+        try {
+            emailService.sendMessage("dongph.0502@gmail.com", email, subject, message);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private String generateTemporaryPassword() {
+        return RandomStringUtils.random(10, true, true);
     }
 
     public ResponseEntity<?> activeAccount(String email, String activationCode) {

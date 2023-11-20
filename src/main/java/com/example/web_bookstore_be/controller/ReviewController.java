@@ -62,7 +62,7 @@ public class ReviewController {
 
             // Set lại rating trung bình của quyển sách đó
             List<Review> reviewList = reviewRepository.findAll();
-            int sum = 0; // Tổng rating
+            double sum = 0; // Tổng rating
             int n = 0; // Số lượng rating
             for (Review review : reviewList) {
                 if (review.getBook().getIdBook() == idBook) {
@@ -70,7 +70,7 @@ public class ReviewController {
                     sum += review.getRatingPoint();
                 }
             }
-            float ratingAvg = (float) sum / n;
+            double ratingAvg = sum / n;
             book.setAvgRating(ratingAvg);
             bookRepository.save(book);
 
