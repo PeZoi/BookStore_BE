@@ -1,10 +1,16 @@
 package com.example.web_bookstore_be.entity;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
 @Entity
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "favorite_book")
 public class FavoriteBook {
     @Id
