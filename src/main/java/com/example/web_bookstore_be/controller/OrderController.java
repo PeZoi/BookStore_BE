@@ -21,10 +21,20 @@ public class OrderController {
         }
     }
 
-    @PutMapping("/update-order")
+    @PutMapping("/update-order") // update các trạng thái
     public ResponseEntity<?> update (@RequestBody JsonNode jsonData) {
         try{
             return orderService.update(jsonData);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.badRequest().build();
+        }
+    }
+
+    @PutMapping("/cancel-order") // khi thanh toán mà huỷ thanh toán
+    public ResponseEntity<?> cancle (@RequestBody JsonNode jsonNode) {
+        try{
+            return orderService.cancel(jsonNode);
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.badRequest().build();

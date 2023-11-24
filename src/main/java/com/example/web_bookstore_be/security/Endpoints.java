@@ -22,6 +22,7 @@ public class Endpoints {
             "/favorite-book/get-favorite-book/**",
             "/users/*/listFavoriteBooks",
             "/favorite-books/*/book",
+            "/vnpay/**",
     };
 
     public static final String[] PUBLIC_POST = {
@@ -32,6 +33,7 @@ public class Endpoints {
             "/review/**",
             "/feedback/add-feedback",
             "/favorite-book/add-book",
+            "/vnpay/create-payment/**",
     };
 
     public static final String[] PUBLIC_PUT = {
@@ -42,7 +44,8 @@ public class Endpoints {
             "/user/change-password",
             "/user/forgot-password",
             "/user/change-avatar",
-
+            "/order/update-order",
+            "/order/cancel-order",
     };
 
     public static final String[] PUBLIC_DELETE = {

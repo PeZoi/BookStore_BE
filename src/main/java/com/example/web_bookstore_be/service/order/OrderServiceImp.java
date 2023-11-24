@@ -1,10 +1,7 @@
 package com.example.web_bookstore_be.service.order;
 
 import com.example.web_bookstore_be.dao.*;
-import com.example.web_bookstore_be.entity.Book;
-import com.example.web_bookstore_be.entity.Order;
-import com.example.web_bookstore_be.entity.OrderDetail;
-import com.example.web_bookstore_be.entity.User;
+import com.example.web_bookstore_be.entity.*;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.transaction.Transactional;
@@ -30,6 +27,8 @@ public class OrderServiceImp implements OrderService{
     private CartItemRepository cartItemRepository;
     @Autowired
     private BookRepository bookRepository;
+    @Autowired
+    private PaymentRepository paymentRepository;
     public OrderServiceImp(ObjectMapper objectMapper) {
         this.objectMapper = objectMapper;
     }
@@ -47,6 +46,10 @@ public class OrderServiceImp implements OrderService{
             int idUser = Integer.parseInt(formatStringByJson(String.valueOf(jsonData.get("idUser"))));
             Optional<User> user = userRepository.findById(idUser);
             orderData.setUser(user.get());
+
+            int idPayment = Integer.parseInt(formatStringByJson(String.valueOf(jsonData.get("idPayment"))));
+            Optional<Payment> payment = paymentRepository.findById(idPayment);
+            orderData.setPayment(payment.get());
 
             Order newOrder = orderRepository.save(orderData);
 
@@ -102,6 +105,32 @@ public class OrderServiceImp implements OrderService{
             e.printStackTrace();
             return ResponseEntity.badRequest().build();
         }
+        return ResponseEntity.ok().build();
+    }
+
+    @Override
+    public ResponseEntity<?> cancel(JsonNode jsonData) {
+        try{
+            int idUser = Integer.parseInt(formatStringByJson(String.valueOf(jsonData.get("idUser"))));
+            User user = userRepository.findById(idUser).get();
+
+            Order order = orderRepository.findFirstByUserOrderByIdOrderDesc(user);
+            order.setStatus("Bị huỷ");
+
+            List<OrderDetail> orderDetailList = orderDetailRepository.findOrderDetailsByOrder(order);
+            for (OrderDetail orderDetail : orderDetailList) {
+                Book bookOrderDetail = orderDetail.getBook();
+                bookOrderDetail.setSoldQuantity(bookOrderDetail.getSoldQuantity() - orderDetail.getQuantity());
+                bookOrderDetail.setQuantity(bookOrderDetail.getQuantity() + orderDetail.getQuantity());
+                bookRepository.save(bookOrderDetail);
+            }
+
+            orderRepository.save(order);
+
+        } catch (Exception e) {
+            return ResponseEntity.notFound().build();
+        }
+
         return ResponseEntity.ok().build();
     }
 
