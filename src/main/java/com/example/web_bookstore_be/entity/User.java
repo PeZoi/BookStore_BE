@@ -30,8 +30,6 @@ public class User {
     private String email; // Email
     @Column(name = "phone_number")
     private String phoneNumber; // Số điện thoại
-    @Column(name = "purchase_address")
-    private String purchaseAddress; // Địa chỉ mua hàng
     @Column(name = "delivery_address")
     private String deliveryAddress; // Địa chỉ giao hàng
     @Column(name = "avatar")
@@ -72,7 +70,6 @@ public class User {
                 ", dateOfBirth=" + dateOfBirth +
                 ", email='" + email + '\'' +
                 ", phoneNumber='" + phoneNumber + '\'' +
-                ", purchaseAddress='" + purchaseAddress + '\'' +
                 ", deliveryAddress='" + deliveryAddress + '\'' +
                 ", avatar='" + avatar + '\'' +
                 ", enabled=" + enabled +

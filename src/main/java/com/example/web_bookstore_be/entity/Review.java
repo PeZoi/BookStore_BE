@@ -27,4 +27,8 @@ public class Review {
     @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinColumn(name = "id_user", nullable = false)
     private User user; // Người dùng (ai là người đánh giá)
+
+    @OneToOne( cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @JoinColumn(name = "id_order_detail")
+    private OrderDetail orderDetail;
 }

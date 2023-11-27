@@ -16,8 +16,6 @@ public class Order {
     private int idOrder; // Mã đơn hàng
     @Column(name = "date_created")
     private Date dateCreated; // Ngày tạo giỏ hàng
-    @Column(name = "purchase_address")
-    private String purchaseAddress; // Địa chỉ mua hàng
     @Column(name = "delivery_address")
     private String deliveryAddress; // Địa chỉ giao hàng
     @Column(name = "phone_number")

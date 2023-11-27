@@ -23,8 +23,6 @@ public class Book {
     private String nameBook; // Tên sách
     @Column(name = "author")
     private String author; // Tên tác giả
-    @Column(name = "isbn")
-    private String ISBN; // Mã ISBN
     @Column(name = "description", columnDefinition = "LONGTEXT")
     private String description; // Mô tả
     @Column(name = "list_price")
