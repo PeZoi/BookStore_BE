@@ -260,7 +260,7 @@ public class UserServiceImp implements UserService {
 
     private void sendEmailActivation(String email, String activationCode) {
 //        String endpointFE = "https://d451-203-205-27-198.ngrok-free.app";
-        String endpointFE = "http//localhost:3000";
+        String endpointFE = "http://localhost:3000";
         String url = endpointFE + "/active/" + email + "/" + activationCode;
         String subject = "Kích hoạt tài khoản";
         String message = "Cảm ơn bạn đã là thành viên của chúng tôi. Vui lòng kích hoạt tài khoản!: <br/> Mã kích hoạt: <strong>"+ activationCode +"<strong/>";

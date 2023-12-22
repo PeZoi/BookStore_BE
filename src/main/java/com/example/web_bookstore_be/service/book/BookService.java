@@ -6,4 +6,5 @@ import org.springframework.http.ResponseEntity;
 public interface BookService {
     public ResponseEntity<?> save(JsonNode bookJson);
     public ResponseEntity<?> update(JsonNode bookJson);
+    public long getTotalBook();
 }

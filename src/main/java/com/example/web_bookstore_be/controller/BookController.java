@@ -33,4 +33,9 @@ public class BookController {
             return ResponseEntity.badRequest().build();
         }
     }
+
+    @GetMapping(path = "/get-total")
+    public long getTotal() {
+        return bookService.getTotalBook();
+    }
 }

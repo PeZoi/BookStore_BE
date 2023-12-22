@@ -6,5 +6,5 @@ import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 
 @RepositoryRestResource(path = "feedbacks")
 public interface FeedBackRepository extends JpaRepository<Feedbacks, Integer> {
-
+    long countBy();
 }

@@ -74,6 +74,8 @@ public class Endpoints {
             "/favorite-book/**",
             "/favorite-books/**",
             "/review/**",
+            "/book/get-total/**",
+            "/feedbacks/search/countBy/**",
             "/**",
 
     };
