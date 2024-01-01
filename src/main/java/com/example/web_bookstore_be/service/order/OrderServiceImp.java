@@ -59,7 +59,7 @@ public class OrderServiceImp implements OrderService{
                 Book bookResponse = objectMapper.treeToValue(node.get("book"), Book.class);
                 Optional<Book> book = bookRepository.findById(bookResponse.getIdBook());
                 book.get().setQuantity(book.get().getQuantity() - quantity);
-                book.get().setSoldQuantity(quantity);
+                book.get().setSoldQuantity(book.get().getSoldQuantity() + quantity);
 
                 OrderDetail orderDetail = new OrderDetail();
                 orderDetail.setBook(book.get());
